@@ -14,13 +14,13 @@ for pr in allPRsonDevops['value']:
     repoName = pr['repository']['name']
     projectID = pr['repository']['project']['id']
     creationDate = pr['creationDate']
-    isDraft = pr['isDraft']
+    url = pr['url']
     revDisplayName = pr['reviewers'][0]['displayName']
     revvote= pr['reviewers'][0]['vote']
     if (revvote == 0):
-        myList = [pullRequestId, repoName, projectID, creationDate[:10], isDraft, revDisplayName, revvote]
+        myList = [pullRequestId, repoName, projectID, creationDate[:10], url, revDisplayName, revvote]
         Dict[pullRequestId] = myList
-        #print(pullRequestId, repoName, projectID, creationDate[:10], isDraft, revDisplayName, revvote)
+        #print(pullRequestId, repoName, projectID, creationDate[:10], url, revDisplayName, revvote)
         
 EvaluationDict ={}
 for d in Dict.items():
@@ -35,8 +35,36 @@ for d in Dict.items():
             tempDict[name]=status
             myList.insert(0, tempDict)
             #print(tempDict)
-        print(myList)
+        #print(myList)
         EvaluationDict[d[0]]=myList
 
-print(EvaluationDict)
+#print(EvaluationDict)
 
+ 
+#print ("{:<8} {:<35} {:<25} {:<25} {:<25}".format('PRID', 'Val','Result', 'RepoName', 'CreationDate'))
+"""output = ("{:<8} {:<35} {:<25} {:<25} {:<25}".format('PRID', 'Val','Result', 'RepoName', 'CreationDate'))
+for k, v in EvaluationDict.items():
+    #print (k,v)
+    for i in v:
+        #print(i)
+        for z, w in i.items():
+            #print ("{:<8} {:<35} {:<25} {:<25} {:<25}".format(k, z, w,Dict[k][1],Dict[k][3]))
+            output += ("\n"+"{:<8} {:<35} {:<25} {:<25} {:<25}".format(k, z, w,Dict[k][1],Dict[k][3]))
+    output += ("\n------------------------------------------------------------------------------------------------------------------------")
+            #print(k,z,w)
+
+print(output)"""
+
+
+output=""
+for k, v in EvaluationDict.items():
+    output += "<table><tr><th>PRID</th><th>Val</th><th>Result</th><th>RepoName</th><th>CreationDate</th></tr>"
+    url= "https://{instance}/Default_Collection/AI/_git/"+Dict[k][1]+"/pullrequest/"+str(k)
+    for i in v:
+        for z, w in i.items():
+            output += ("<tr><td><a href='"+url+"'>"+str(k)+"</a></td><td>"+z+"</td><td>"+w+"</td><td>"+Dict[k][1]+"</td><td>"+str(Dict[k][3])+"</td></tr>")
+    output+="</table><br><br>"
+    
+print(output)
+
+print('##vso[task.setvariable variable=<Variable-in-Pipeline]+<output')
