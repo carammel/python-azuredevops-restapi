@@ -56,15 +56,13 @@ for k, v in EvaluationDict.items():
 print(output)"""
 
 
-output=""
+output = "<table><tr><th>PRID</th><th>RepoName</th><th>CreationDate</th><th>Val</th><th>Result</th></tr>"
 for k, v in EvaluationDict.items():
-    output += "<table><tr><th>PRID</th><th>Val</th><th>Result</th><th>RepoName</th><th>CreationDate</th></tr>"
-    url= "https://{instance}/Default_Collection/AI/_git/"+Dict[k][1]+"/pullrequest/"+str(k)
+    url= "https://devops/Dev_Collection/APIs/_git/"+Dict[k][1]+"/pullrequest/"+str(k)
+    output += ("<tr><td rowspan='"+ str(len(v)+1) +"'>" +"<a href='"+url+"'>"+str(k)+"</a></td><td rowspan='"+ str(len(v)+1) +"'>"+Dict[k][1]+"</td><td rowspan='"+ str(len(v)+1) +"'>" + str(Dict[k][3])+"</td></tr>")
     for i in v:
         for z, w in i.items():
-            output += ("<tr><td><a href='"+url+"'>"+str(k)+"</a></td><td>"+z+"</td><td>"+w+"</td><td>"+Dict[k][1]+"</td><td>"+str(Dict[k][3])+"</td></tr>")
-    output+="</table><br><br>"
-    
-print(output)
+            output += ("<tr><td>"+z+"</td><td>"+w+"</td></tr>")
+output += ("</table>")
 
-print('##vso[task.setvariable variable=<Variable-in-Pipeline]+<output')
+print("##vso[task.setvariable variable=PYoutput]"+output)
