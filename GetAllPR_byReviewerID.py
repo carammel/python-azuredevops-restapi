@@ -25,7 +25,7 @@ for pr in allPRsonDevops['value']:
 EvaluationDict ={}
 for d in Dict.items():
     #print(d[0], d[1][2])
-    evalutions = tfs.getEvaluationsonPRbyArtficatID(collectionName,'APIs',str(d[1][2]), str(d[0]))
+    evalutions = tfs.getEvaluationsonPRbyArtficatID(collectionName,'AI',str(d[1][2]), str(d[0]))
     myList = []
     if (evalutions['count'] !=0):
         for ev in evalutions['value']:
